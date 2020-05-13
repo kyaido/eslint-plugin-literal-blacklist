@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "eslint": "^6.1.0",
-    "mocha": "^6.2.0"
+    "mocha": "^7.1.2"
   },
   "homepage": "https://github.com/kyaido/eslint-plugin-literal-blacklist",
   "keywords": [
