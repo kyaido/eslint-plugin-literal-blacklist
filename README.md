@@ -8,7 +8,6 @@ An ESLint micro plugin.
 $ npm install eslint-plugin-literal-blacklist --save-dev
 ```
 
-
 ## Usage
 
 ```
@@ -22,7 +21,6 @@ $ npm install eslint-plugin-literal-blacklist --save-dev
   }
 }
 ```
-
 
 ## Supported Rules
 

@@ -2,29 +2,31 @@
 
 module.exports = {
   meta: {
-    schema: [{
-      type: 'array',
-      items: {
-        oneOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'object',
-            properties: {
-              term: {
-                type: 'string',
-              },
-              message: {
-                type: 'string',
-              }
+    schema: [
+      {
+        type: 'array',
+        items: {
+          oneOf: [
+            {
+              type: 'string',
             },
-            additionalProperties: false
-          }
-        ]
+            {
+              type: 'object',
+              properties: {
+                term: {
+                  type: 'string',
+                },
+                message: {
+                  type: 'string',
+                },
+              },
+              additionalProperties: false,
+            },
+          ],
+        },
+        uniqueItems: true,
       },
-      uniqueItems: true
-    }]
+    ],
   },
 
   create: (context) => {
@@ -34,19 +36,21 @@ module.exports = {
     }
 
     return {
-      'Literal': node => {
+      Literal: (node) => {
         const value = String(node.value);
 
-        options.forEach(option => {
+        options.forEach((option) => {
           const isStringOption = typeof option === 'string';
           const term = isStringOption ? option : option.term;
 
           if (value.indexOf(term) !== -1) {
-            const message = isStringOption ? `You should not use '${term}'.` : option.message;
-            context.report({node, message});
+            const message = isStringOption
+              ? `You should not use '${term}'.`
+              : option.message;
+            context.report({ node, message });
           }
         });
-      }
+      },
     };
-  }
+  },
 };
