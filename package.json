@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
     "mocha": "^9.1.1",
     "prettier": "^2.4.1"
   },
@@ -24,6 +25,8 @@
     "url": "https://github.com/kyaido/eslint-plugin-literal-blacklist.git"
   },
   "scripts": {
-    "test": "mocha tests/**/*.js"
+    "test": "mocha tests/**/*.js",
+    "format": "prettier --write .",
+    "lint": "eslint --fix ."
   }
 }
