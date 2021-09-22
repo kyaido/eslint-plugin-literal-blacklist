@@ -37,7 +37,14 @@ tester.run('literal-blacklist', require('../rules/literal-blacklist'), {
     },
     {
       code: 'var http = "http://example.com";',
-      options: [[{ term: 'http:', message: `You should use 'https:' instead of 'http:.'`}]],
+      options: [
+        [
+          {
+            term: 'http:',
+            message: `You should use 'https:' instead of 'http:.'`,
+          },
+        ],
+      ],
       errors: [`You should use 'https:' instead of 'http:.'`],
     },
   ],
