@@ -1,29 +1,56 @@
 'use strict';
 
-module.exports = function(context) {
+module.exports = {
+  meta: {
+    schema: [
+      {
+        type: 'array',
+        items: {
+          oneOf: [
+            {
+              type: 'string',
+            },
+            {
+              type: 'object',
+              properties: {
+                term: {
+                  type: 'string',
+                },
+                message: {
+                  type: 'string',
+                },
+              },
+              additionalProperties: false,
+            },
+          ],
+        },
+        uniqueItems: true,
+      },
+    ],
+  },
 
-  let options = [];
-  if (Array.isArray(context.options[0])) {
-    options = context.options[0];
-  }
-
-  return {
-    'Literal': node => {
-      let message = null;
-      let value = String(node.value);
-
-      options.forEach(option => {
-        if(value.indexOf(option) !== -1) {
-          message = `You should not use "${option}".`;
-          context.report({node: node, message: message});
-        }
-      });
+  create: (context) => {
+    let options = [];
+    if (Array.isArray(context.options[0])) {
+      options = context.options[0];
     }
-  };
-};
 
-module.exports.schema = [{
-  type: 'array',
-  items: { type: 'string' },
-  uniqueItems: true
-}];
+    return {
+      Literal: (node) => {
+        const value = String(node.value);
+
+        options.forEach((option) => {
+          const isStringOption = typeof option === 'string';
+          const term = isStringOption ? option : option.term;
+
+          if (value.indexOf(term) !== -1) {
+            const message = isStringOption
+              ? `You should not use '${term}'.`
+              : option.message;
+            context.report({ node, message });
+          }
+        });
+      },
+    };
+  },
+};

@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports.rules = {
-  'literal-blacklist': require('./rules/literal-blacklist.js')
+  'literal-blacklist': require('./rules/literal-blacklist.js'),
 };
