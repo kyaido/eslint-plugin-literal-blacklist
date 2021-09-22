@@ -9,13 +9,15 @@ module.exports = function(context) {
 
   return {
     'Literal': node => {
-      let message = null;
-      let value = String(node.value);
+      const value = String(node.value);
 
       options.forEach(option => {
-        if(value.indexOf(option) !== -1) {
-          message = `You should not use "${option}".`;
-          context.report({node: node, message: message});
+        const isStringOption = typeof option === 'string';
+        const term = isStringOption ? option : option.term;
+
+        if (value.indexOf(term) !== -1) {
+          const message = isStringOption ? `You should not use "${term}".` : option.message;
+          context.report({node, message});
         }
       });
     }
@@ -24,6 +26,24 @@ module.exports = function(context) {
 
 module.exports.schema = [{
   type: 'array',
-  items: { type: 'string' },
+  items: {
+    oneOf: [
+      {
+        type: "string",
+      },
+      {
+        type: "object",
+        properties: {
+          term: {
+            type: "string",
+          },
+          message: {
+            type: "string",
+          }
+        },
+        additionalProperties: false
+      }
+    ]
+  },
   uniqueItems: true
 }];
