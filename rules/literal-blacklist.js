@@ -4,42 +4,53 @@ module.exports = {
   meta: {
     schema: [
       {
-        type: 'array',
-        items: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'object',
-              properties: {
-                term: {
+        type: "object",
+        properties: {
+          ignoreCase: {
+            type: "boolean",
+            default: false,
+          },
+          literals: {
+            type: 'array',
+            items: {
+              oneOf: [
+                {
                   type: 'string',
                 },
-                message: {
-                  type: 'string',
+                {
+                  type: 'object',
+                  properties: {
+                    term: {
+                      type: 'string',
+                    },
+                    message: {
+                      type: 'string',
+                    },
+                  },
+                  additionalProperties: false,
                 },
-              },
-              additionalProperties: false,
+              ],
             },
-          ],
+            uniqueItems: true,
+          },
         },
-        uniqueItems: true,
+        additionalProperties: false,
       },
     ],
   },
 
   create: (context) => {
-    let options = [];
-    if (Array.isArray(context.options[0])) {
-      options = context.options[0];
+    const options = context.options[0] || {}, ignoreCase = options.ignoreCase || false;
+    let literalOptions = [];
+    if (Array.isArray(options.literals)) {
+      literalOptions = options.literals;
     }
 
     return {
       Literal: (node) => {
-        const value = String(node.value);
+        const value = ignoreCase ? String(node.value).toLowerCase() : String(node.value);
 
-        options.forEach((option) => {
+        literalOptions.forEach((option) => {
           const isStringOption = typeof option === 'string';
           const term = isStringOption ? option : option.term;
 
