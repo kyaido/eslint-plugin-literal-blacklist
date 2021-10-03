@@ -19,10 +19,11 @@ You can put string or object in an array.
     "literal-blacklist"
   ],
   "rules": {
-    "literal-blacklist/literal-blacklist": [2, {"ignoreCase": true, literals: ["put", "your", "string", "or", {
+    "literal-blacklist/literal-blacklist": [2, ["put", "your", "string", "or", {
       term: "object",
       message: "custom message",
-    }]}]
+      ignoreCase: true
+    }]]
   }
 }
 ```

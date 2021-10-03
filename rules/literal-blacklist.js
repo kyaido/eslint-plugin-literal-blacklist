@@ -4,60 +4,50 @@ module.exports = {
   meta: {
     schema: [
       {
-        type: "object",
-        properties: {
-          ignoreCase: {
-            type: "boolean",
-            default: false,
-          },
-          literals: {
-            type: 'array',
-            items: {
-              oneOf: [
-                {
+        type: 'array',
+        items: {
+          oneOf: [
+            {
+              type: 'string',
+            },
+            {
+              type: 'object',
+              properties: {
+                term: {
                   type: 'string',
                 },
-                {
-                  type: 'object',
-                  properties: {
-                    term: {
-                      type: 'string',
-                    },
-                    message: {
-                      type: 'string',
-                    },
-                  },
-                  additionalProperties: false,
+                message: {
+                  type: 'string',
                 },
-              ],
+                ignoreCase: {
+                  type: "boolean",
+                }
+              },
+              additionalProperties: false,
             },
-            uniqueItems: true,
-          },
+          ],
         },
-        additionalProperties: false,
+        uniqueItems: true,
       },
     ],
   },
 
   create: (context) => {
-    const options = context.options[0] || {}, ignoreCase = options.ignoreCase || false;
-    let literalOptions = [];
-    if (Array.isArray(options.literals)) {
-      literalOptions = options.literals;
+    let options = [];
+    if (Array.isArray(context.options[0])) {
+      options = context.options[0];
     }
 
     return {
       Literal: (node) => {
-        const value = ignoreCase ? String(node.value).toLowerCase() : String(node.value);
-
-        literalOptions.forEach((option) => {
+        options.forEach((option) => {
           const isStringOption = typeof option === 'string';
           const term = isStringOption ? option : option.term;
+          const ignoreCase = option.ignoreCase || false;
+          const value = ignoreCase ? String(node.value).toLowerCase() : String(node.value);
 
           if (value.indexOf(term) !== -1) {
-            const message = isStringOption
-              ? `You should not use '${term}'.`
-              : option.message;
+            const message = option.message || `You should not use '${term}'.`;
             context.report({ node, message });
           }
         });
