@@ -12,7 +12,7 @@ module.exports = {
             },
             {
               type: 'object',
-              required: ["term"],
+              required: ['term'],
               properties: {
                 term: {
                   type: 'string',
@@ -21,8 +21,8 @@ module.exports = {
                   type: 'string',
                 },
                 ignoreCase: {
-                  type: "boolean",
-                }
+                  type: 'boolean',
+                },
               },
               additionalProperties: false,
             },
@@ -44,7 +44,9 @@ module.exports = {
         options.forEach((option) => {
           const term = option.term || option;
           const ignoreCase = option.ignoreCase || false;
-          const value = ignoreCase ? String(node.value).toLowerCase() : String(node.value);
+          const value = ignoreCase
+            ? String(node.value).toLowerCase()
+            : String(node.value);
 
           if (value.indexOf(term) !== -1) {
             const message = option.message || `You should not use '${term}'.`;
