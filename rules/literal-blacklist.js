@@ -42,8 +42,7 @@ module.exports = {
     return {
       Literal: (node) => {
         options.forEach((option) => {
-          const isStringOption = typeof option === 'string';
-          const term = isStringOption ? option : option.term;
+          const term = option.term || option;
           const ignoreCase = option.ignoreCase || false;
           const value = ignoreCase ? String(node.value).toLowerCase() : String(node.value);
 
