@@ -12,6 +12,7 @@ module.exports = {
             },
             {
               type: 'object',
+              required: ["term"],
               properties: {
                 term: {
                   type: 'string',
