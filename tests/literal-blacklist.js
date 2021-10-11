@@ -8,15 +8,16 @@ tester.run('literal-blacklist', require('../rules/literal-blacklist'), {
     { code: 'var https = "https:";', options: [['http:']] },
     { code: 'var http = "https:";', options: [['http:']] },
     { code: 'http();', options: [['http:']] },
-    { code: 'var https = "HTTPS:";',
+    {
+      code: 'var https = "HTTPS:";',
       options: [
         [
           {
             term: 'http:',
-            ignoreCase: true
-          }
-        ]
-      ]
+            ignoreCase: true,
+          },
+        ],
+      ],
     },
   ],
   invalid: [
@@ -94,7 +95,10 @@ tester.run('literal-blacklist', require('../rules/literal-blacklist'), {
           'EXAMPLE',
         ],
       ],
-      errors: [`You should use 'https:' instead of 'http:.'`, `You should not use 'EXAMPLE'.`],
+      errors: [
+        `You should use 'https:' instead of 'http:.'`,
+        `You should not use 'EXAMPLE'.`,
+      ],
     },
   ],
 });
