@@ -19,6 +19,9 @@ module.exports = {
                 message: {
                   type: 'string',
                 },
+                ignoreCase: {
+                  type: "boolean",
+                }
               },
               additionalProperties: false,
             },
@@ -37,16 +40,14 @@ module.exports = {
 
     return {
       Literal: (node) => {
-        const value = String(node.value);
-
         options.forEach((option) => {
           const isStringOption = typeof option === 'string';
           const term = isStringOption ? option : option.term;
+          const ignoreCase = option.ignoreCase || false;
+          const value = ignoreCase ? String(node.value).toLowerCase() : String(node.value);
 
           if (value.indexOf(term) !== -1) {
-            const message = isStringOption
-              ? `You should not use '${term}'.`
-              : option.message;
+            const message = option.message || `You should not use '${term}'.`;
             context.report({ node, message });
           }
         });

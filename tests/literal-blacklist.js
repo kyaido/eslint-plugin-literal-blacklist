@@ -8,6 +8,16 @@ tester.run('literal-blacklist', require('../rules/literal-blacklist'), {
     { code: 'var https = "https:";', options: [['http:']] },
     { code: 'var http = "https:";', options: [['http:']] },
     { code: 'http();', options: [['http:']] },
+    { code: 'var https = "HTTPS:";',
+      options: [
+        [
+          {
+            term: 'http:',
+            ignoreCase: true
+          }
+        ]
+      ]
+    },
   ],
   invalid: [
     {
@@ -46,6 +56,45 @@ tester.run('literal-blacklist', require('../rules/literal-blacklist'), {
         ],
       ],
       errors: [`You should use 'https:' instead of 'http:.'`],
+    },
+    {
+      code: 'var http = "HTTP://example.com";',
+      options: [
+        [
+          {
+            term: 'http:',
+            ignoreCase: true,
+          },
+        ],
+      ],
+      errors: [`You should not use 'http:'.`],
+    },
+    {
+      code: 'var http = "HTTP://example.com";',
+      options: [
+        [
+          {
+            term: 'http:',
+            message: `You should use 'https:' instead of 'http:.'`,
+            ignoreCase: true,
+          },
+        ],
+      ],
+      errors: [`You should use 'https:' instead of 'http:.'`],
+    },
+    {
+      code: 'var http = "HTTP://EXAMPLE.com";',
+      options: [
+        [
+          {
+            term: 'http:',
+            message: `You should use 'https:' instead of 'http:.'`,
+            ignoreCase: true,
+          },
+          'EXAMPLE',
+        ],
+      ],
+      errors: [`You should use 'https:' instead of 'http:.'`, `You should not use 'EXAMPLE'.`],
     },
   ],
 });

@@ -22,6 +22,7 @@ You can put string or object in an array.
     "literal-blacklist/literal-blacklist": [2, ["put", "your", "string", "or", {
       term: "object",
       message: "custom message",
+      ignoreCase: true
     }]]
   }
 }
