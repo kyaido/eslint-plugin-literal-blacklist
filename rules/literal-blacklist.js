@@ -42,13 +42,11 @@ module.exports = {
     return {
       Literal: (node) => {
         options.forEach((option) => {
+          const targetLiteral = String(node.value);
           const term = option.term || option;
-          const ignoreCase = option.ignoreCase || false;
-          const value = ignoreCase
-            ? String(node.value).toLowerCase()
-            : String(node.value);
+          const addFlag = option.ignoreCase ? 'i' : '';
 
-          if (value.indexOf(term) !== -1) {
+          if (targetLiteral.match(new RegExp(term, 'u' + addFlag))) {
             const message = option.message || `You should not use '${term}'.`;
             context.report({ node, message });
           }
