@@ -10,7 +10,7 @@ $ npm install eslint-plugin-literal-blacklist --save-dev
 
 ## Usage
 
-You can put string or object in an array.
+You can put string (also accept regex) or object in an array.
 
 ```
 // .eslintrc
@@ -19,7 +19,7 @@ You can put string or object in an array.
     "literal-blacklist"
   ],
   "rules": {
-    "literal-blacklist/literal-blacklist": [2, ["put", "your", "string", "or", {
+    "literal-blacklist/literal-blacklist": [2, ["put", "your", "string", "^or$", {
       term: "object",
       message: "custom message",
       ignoreCase: true
